@@ -1,6 +1,16 @@
 version: '3.4'
 
 services:
+  portainer:
+    container_name: portainer
+    restart: always
+    ports:
+      - "9000:9000"  
+      - "8080:8000" 
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
   catalogdb:
     container_name: catalogdb
     restart: always
@@ -9,12 +19,29 @@ services:
     volumes:
       - mongo_data:/data/db   
 
+  basketdb:
+    container_name: basketdb
+    restart: always
+    ports:
+      - "6379:6379"  
+
   catalog.api:
     container_name: catalog.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings:ConnectionString:mongodb://catalogdb:27017"
+      - "DatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
     depends_on:
       - catalogdb
     ports:
       - "8000:80"
+
+  basket.api:
+    container_name: basket.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "CacheSettings:ConnectionString=basketdb:6379"
+    depends_on:
+      - basketdb
+    ports:
+      - "8001:80"
+
