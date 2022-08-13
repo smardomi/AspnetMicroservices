@@ -1,13 +1,11 @@
-﻿using Discount.Grpc.Repositories;
+﻿using AutoMapper;
+using Discount.Grpc.Repositories;
+using Discount.Grpc.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Discount.Grpc
 {
@@ -18,9 +16,9 @@ namespace Discount.Grpc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<IDiscountRepository, DiscountRepository>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,7 +33,7 @@ namespace Discount.Grpc
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<DiscountService>();
 
                 endpoints.MapGet("/", async context =>
                 {
