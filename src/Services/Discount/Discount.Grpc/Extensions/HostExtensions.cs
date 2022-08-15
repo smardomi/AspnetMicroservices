@@ -7,7 +7,7 @@ using System;
 
 namespace Discount.Grpc.Extensions
 {
-    public static class HostExtensions
+    internal static class HostExtensions
     {
         public static IHost MigrateDatabase<TContext>(this IHost host, int? retry = 0)
         {
