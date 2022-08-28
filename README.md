@@ -1,7 +1,8 @@
+![microservices_remastered](https://user-images.githubusercontent.com/1147445/110304529-c5b70180-800c-11eb-832b-a2751b5bda76.png)
+
 There is a couple of microservices which implemented **e-commerce** modules over **Catalog, Basket, Discount** and **Ordering** microservices with **NoSQL (MongoDB, Redis)** and **Relational databases (PostgreSQL, Sql Server)** with communicating over **RabbitMQ Event Driven Communication** and using **Ocelot API Gateway**.
 
 ## Whats Including In This Repository
-I have implemented below **features over the run-aspnetcore-microservices repository**.
 
 #### Catalog microservice which includes; 
 * ASP.NET Core Web API application 
