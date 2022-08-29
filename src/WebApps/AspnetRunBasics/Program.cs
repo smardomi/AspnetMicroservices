@@ -1,11 +1,7 @@
-using System;
-using System.Reflection;
 using Common.Logging;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Sinks.Elasticsearch;
 
 namespace AspnetRunBasics
 {
