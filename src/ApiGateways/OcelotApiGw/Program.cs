@@ -1,7 +1,9 @@
+using Common.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace OcelotApiGw
 {
@@ -22,11 +24,12 @@ namespace OcelotApiGw
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-                .ConfigureLogging((hostingContext, loggingbuilder) =>
-                {
-                    loggingbuilder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    loggingbuilder.AddConsole();
-                    loggingbuilder.AddDebug();
-                });
+                .UseSerilog(SeriLogger.Configure);
+        //.ConfigureLogging((hostingContext, loggingbuilder) =>
+        //{
+        //    loggingbuilder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+        //    loggingbuilder.AddConsole();
+        //    loggingbuilder.AddDebug();
+        //});
     }
 }
