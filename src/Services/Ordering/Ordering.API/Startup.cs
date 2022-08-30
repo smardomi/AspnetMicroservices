@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using Ordering.API.EventBusConsumer;
 using Ordering.Application;
 using Ordering.Infrustructure;
+using Ordering.Infrustructure.Persistence;
 
 namespace Ordering.API
 {
@@ -33,6 +34,7 @@ namespace Ordering.API
                 config.UsingRabbitMq((context, configurator) =>
                 {
                     configurator.Host(Configuration["EventBusSettings:HostAddress"]);
+                    configurator.UseHealthCheck(context);
                     configurator.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue, c =>
                     {
                         c.ConfigureConsumer<BasketCheckoutConsumer>(context);
@@ -50,6 +52,10 @@ namespace Ordering.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Ordering.API", Version = "v1" });
             });
+
+
+            services.AddHealthChecks()
+                .AddDbContextCheck<OrderContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
