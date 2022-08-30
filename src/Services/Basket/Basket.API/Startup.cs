@@ -9,6 +9,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using MassTransit;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Basket.API
 {
@@ -22,6 +25,7 @@ namespace Basket.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
@@ -36,6 +40,7 @@ namespace Basket.API
                 config.UsingRabbitMq((context, configurator) =>
                 {
                     configurator.Host(Configuration["EventBusSettings:HostAddress"]);
+                    configurator.UseHealthCheck(context);
                 });
             }).AddMassTransitHostedService();
 
@@ -49,6 +54,9 @@ namespace Basket.API
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options => options.Address = new Uri(Configuration["GrpcSettings:DiscountUrl"]));
             services.AddScoped<DiscountGrpcService>();
+
+            services.AddHealthChecks()
+                .AddRedis(Configuration["CacheSettings:ConnectionString"], "Redis Health", HealthStatus.Degraded);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +76,11 @@ namespace Basket.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
         }
     }
