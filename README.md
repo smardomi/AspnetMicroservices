@@ -74,3 +74,8 @@ You will need the following tools:
 * [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/)
 * [.Net Core 5 or later](https://dotnet.microsoft.com/download/dotnet-core/5)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+## Original Source and Author
+Thanks in Advance.
+
+* [Mehmet Ozkaya](https://github.com/aspnetrun/run-aspnetcore-microservices) 
